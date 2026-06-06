@@ -104,7 +104,7 @@ function ArchitectureMarquee({ techs }) {
       
       <div 
         className="animate-marquee flex w-max font-mono text-sm font-bold uppercase tracking-[0.35em] text-[var(--accent)]"
-        style={{ animationDuration: '40s' }}
+        style={{ animationDuration: "80s" }}
       >
         <div className="flex gap-4 pr-4">
           <span>{marqueeText}</span>
@@ -287,11 +287,11 @@ export default function App() {
     const currentRole = roles[typeIndex % roles.length];
     let timeout;
     if (!deleting && displayText.length < currentRole.length) {
-      timeout = setTimeout(() => setDisplayText(currentRole.slice(0, displayText.length + 1)), 58);
+      timeout = setTimeout(() => setDisplayText(currentRole.slice(0, displayText.length + 1)), 28);
     } else if (!deleting) {
-      timeout = setTimeout(() => setDeleting(true), 1350);
+      timeout = setTimeout(() => setDeleting(true), 750);
     } else if (displayText.length > 0) {
-      timeout = setTimeout(() => setDisplayText(currentRole.slice(0, displayText.length - 1)), 34);
+      timeout = setTimeout(() => setDisplayText(currentRole.slice(0, displayText.length - 1)), 18);
     } else {
       setDeleting(false);
       setTypeIndex((index) => index + 1);
@@ -373,12 +373,80 @@ export default function App() {
             <button type="button" onClick={toggleTheme} className="grid h-10 w-10 place-items-center rounded-xl border border-[var(--line-soft)] bg-[var(--bg-input)]">
               {isDark ? <Sun className="h-4 w-4 text-amber-300" /> : <Moon className="h-4 w-4 text-indigo-600" />}
             </button>
-            <button type="button" onClick={() => setOpenSidebar(!openSidebar)} className="grid h-10 w-10 place-items-center rounded-xl border border-[var(--line-soft)] md:hidden">
+            <button
+              type="button"
+              onClick={() => setOpenSidebar((state) => !state)}
+              aria-label="Toggle navigation menu"
+              aria-expanded={openSidebar}
+              className="grid h-10 w-10 place-items-center rounded-xl border border-[var(--line-soft)] text-[var(--text-primary)] md:hidden"
+            >
               {openSidebar ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
       </header>
+
+      <div
+        className={`fixed inset-0 z-50 bg-black/45 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
+          openSidebar ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        onClick={() => setOpenSidebar(false)}
+      />
+
+      <aside
+        className={`fixed bottom-0 right-0 top-0 z-50 w-80 max-w-[86vw] border-l border-[var(--line-soft)] bg-[var(--nav-bg)] px-6 py-7 shadow-2xl backdrop-blur-2xl transition-transform duration-300 md:hidden ${
+          openSidebar ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <div className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-[var(--accent)]">{profile.name}</div>
+            <div className="mt-1 text-xs text-[var(--text-secondary)]">Navigate</div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setOpenSidebar(false)}
+            aria-label="Close navigation menu"
+            className="grid h-10 w-10 place-items-center rounded-xl border border-[var(--line-soft)] text-[var(--text-primary)]"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        <nav className="mt-10 flex flex-col gap-5 font-mono text-sm font-bold uppercase tracking-[0.22em] text-[var(--text-secondary)]">
+          {navItems.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              onClick={() => setOpenSidebar(false)}
+              className="border-b border-[var(--line-soft)] pb-4 transition-colors hover:text-[var(--accent)]"
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+
+        <div className="mt-10 flex gap-3">
+          <a
+            href={profile.socials.github}
+            target="_blank"
+            rel="noreferrer"
+            className="grid h-10 w-10 place-items-center rounded-xl border border-[var(--line-soft)] text-[var(--text-primary)] transition-colors hover:text-[var(--accent)]"
+            aria-label="Open GitHub profile"
+          >
+            <GitHubIcon className="h-4 w-4" />
+          </a>
+          <a
+            href={profile.socials.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="grid h-10 w-10 place-items-center rounded-xl border border-[var(--line-soft)] text-[var(--text-primary)] transition-colors hover:text-[var(--accent)]"
+            aria-label="Open LinkedIn profile"
+          >
+            <ExternalLink className="h-4 w-4" />
+          </a>
+        </div>
+      </aside>
 
       <main className="relative z-10 mx-auto flex max-w-6xl flex-col gap-28 px-6 pt-36 pb-12">
         <RevealSection className="flex min-h-[70vh] flex-col items-center justify-center gap-10 text-center">

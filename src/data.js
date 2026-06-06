@@ -70,7 +70,7 @@ export const portfolioData = {
         "Firebase Hosting",
         "SharedPreferences"
       ],
-      links: { github: "https://github.com/yuvraj-sd/strumptrac", live: "https://stumptrac.web.app" },
+      links: { github: "https://github.com/yuvraj-sd/stumptrac", live: "https://stumptrac.web.app" },
       images: ["/stumptrac1.png", "/stumptrac2.png"]
     },
     {
